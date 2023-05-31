@@ -15,7 +15,7 @@ const FilterOption = ({ options, changeFilterOptions }: Props) => {
           onChange={changeFilterOptions}
           checked={options === "all"}
         />
-        <label htmlFor="all">All</label>
+        <label htmlFor="radioSelect1">All</label>
       </div>
       <div className="">
         <input
@@ -26,7 +26,7 @@ const FilterOption = ({ options, changeFilterOptions }: Props) => {
           onChange={changeFilterOptions}
           checked={options === "available"}
         />
-        <label htmlFor="available">Available</label>
+        <label htmlFor="radioSelect2">Available</label>
       </div>
       <div className="">
         <input
@@ -37,7 +37,7 @@ const FilterOption = ({ options, changeFilterOptions }: Props) => {
           onChange={changeFilterOptions}
           checked={options === "unavailable"}
         />
-        <label htmlFor="unavailable">Unavailable</label>
+        <label htmlFor="radioSelect3">Unavailable</label>
       </div>
     </div>
   );

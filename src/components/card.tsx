@@ -1,4 +1,5 @@
 import laundromatPic from "../assets/laundromat.jpg";
+import axios from "axios";
 
 interface Prev {
   id: number;
@@ -13,6 +14,14 @@ interface Props {
 }
 
 const Card = ({ item, setMachine, setFilteredMachine }: Props) => {
+  const sendMessage = async () => {
+    try {
+      await axios.post("http://localhost:3333/sendmessage", { id: item.id });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const updateStatus = (prev: Prev[]) => {
     const newStatus = prev.map((obj) => {
       if (obj.id === item.id) {
@@ -35,6 +44,12 @@ const Card = ({ item, setMachine, setFilteredMachine }: Props) => {
       const myinterval = setInterval(() => {
         timeRemaining -= 1000; //decrement the time left by 1s
         if (timeRemaining > 0) {
+          // send message to to group if time < 1 min
+          if (timeRemaining === 85000) {
+            console.log("hi");
+            sendMessage();
+          }
+
           // set the time remaining in the filtered machine
           setFilteredMachine((prev: Prev[]) => {
             const newRemaining = prev.map((obj) => {

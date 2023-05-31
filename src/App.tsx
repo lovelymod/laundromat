@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavBar, Card, FilterOption } from "./components";
 
-const time = 3000;
+const time = 90000;
 
 const laundromat = [
   {
