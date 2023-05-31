@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavBar, Card, FilterOption } from "./components";
 
-const time = 150000;
+const time = 3000;
 
 const laundromat = [
   {
@@ -24,6 +24,11 @@ const laundromat = [
     status: "available",
     remaining: time,
   },
+  {
+    id: 5,
+    status: "available",
+    remaining: time,
+  },
 ];
 
 function App() {
@@ -33,26 +38,38 @@ function App() {
 
   const changeFilterOptions = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOptions(e.target.value);
-    const filtered = machine.filter((obj) => obj.status === e.target.value);
+    const filtered = machine.filter((obj) => {
+      if (e.target.value === "all") {
+        return obj;
+      } else {
+        return obj.status === e.target.value;
+      }
+    });
     setFilteredMachine(filtered);
   };
 
-  const showAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOptions(e.target.value);
-    const filtered = machine.filter((obj) => obj.status);
+  useEffect(() => {
+    // filter everytime machine change
+    const filtered = machine.filter((obj) => {
+      if (options === "all") {
+        return obj;
+      } else {
+        return obj.status === options;
+      }
+    });
     setFilteredMachine(filtered);
-  };
+  }, [machine]);
+
   return (
     <>
       <NavBar />
       <main className="mt-14  flex min-h-screen flex-col">
         <FilterOption
           options={options}
-          showAll={showAll}
           changeFilterOptions={changeFilterOptions}
         />
 
-        <div className="grid grid-cols-2 gap-2 p-2">
+        <div className="grid grid-cols-1 place-items-center gap-2 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {filteredMachine.map((item) => (
             <Card
               key={item.id}
@@ -68,13 +85,3 @@ function App() {
 }
 
 export default App;
-
-// const setTimer = (duration: number) => {
-//   let minutes = (1000 * 60 * duration) / 60000;
-//   const myinterval = setInterval(() => {
-//     minutes--;
-//     console.log(minutes);
-//     if (minutes === 0) clearInterval(myinterval);
-//     return `${minutes}`;
-//   }, 3000);
-// };

@@ -1,19 +1,18 @@
 interface Props {
   options: string;
-  showAll: (e: React.ChangeEvent<HTMLInputElement>) => void;
   changeFilterOptions: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FilterOption = ({ options, showAll, changeFilterOptions }: Props) => {
+const FilterOption = ({ options, changeFilterOptions }: Props) => {
   return (
-    <div className="flex items-center justify-center gap-3">
+    <div className="my-3 flex items-center justify-center gap-3">
       <div className="">
         <input
           type="radio"
           id="radioSelect1"
           name="all"
           value="all"
-          onChange={showAll}
+          onChange={changeFilterOptions}
           checked={options === "all"}
         />
         <label htmlFor="all">All</label>
