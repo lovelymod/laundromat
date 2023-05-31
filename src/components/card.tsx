@@ -4,14 +4,21 @@ import { useState } from "react";
 interface Props {
   item: { id: number; status: string };
   setMachine: React.Dispatch<React.SetStateAction<any>>;
+  setFilteredMachine: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const Card = ({ item, setMachine }: Props) => {
-  const [timeleft, setTimeleft] = useState(5);
+interface Prev {
+  id: number;
+  status: string;
+  remaining: number;
+}
 
-  const updateState = () => {
-    setMachine((prev: { id: number; status: string }[]) => {
-      const newState = prev.map((obj) => {
+const Card = ({ item, setMachine, setFilteredMachine }: Props) => {
+  const [timeleft, setTimeleft] = useState(1000 * 30);
+
+  const updateStatus = () => {
+    setMachine((prev: Prev[]) => {
+      const newStatus = prev.map((obj) => {
         if (obj.id === item.id) {
           return {
             ...obj,
@@ -22,19 +29,34 @@ const Card = ({ item, setMachine }: Props) => {
         return obj;
       });
 
-      return newState;
+      return newStatus;
+    });
+    setFilteredMachine((prev: Prev[]) => {
+      const newStatus = prev.map((obj) => {
+        if (obj.id === item.id) {
+          return {
+            ...obj,
+            status: obj.status === "available" ? "unavailable" : "available",
+          };
+        }
+
+        return obj;
+      });
+
+      return newStatus;
     });
   };
 
   const startTimer = () => {
     if (item.status === "available") {
-      let duration = timeleft;
-      updateState();
+      let timeLeftCopy = timeleft;
+      updateStatus();
       const myinterval = setInterval(() => {
-        setTimeleft(--duration);
-        if (duration === -1) {
-          setTimeleft(5);
-          updateState();
+        timeLeftCopy -= 1000;
+        setTimeleft((prev) => prev - 1000);
+        if (timeLeftCopy < 0) {
+          updateStatus();
+          setTimeleft(1000 * 30);
           clearInterval(myinterval);
         }
       }, 1000);
@@ -62,7 +84,10 @@ const Card = ({ item, setMachine }: Props) => {
       </div>
       <div className="font-medium">
         <p className="">Status: {item.status}</p>
-        <p className="">Timer: {timeleft} s.</p>
+        <p className="">
+          Timer: {Math.floor(timeleft / 1000 / 60)}:
+          {Math.floor(timeleft / 1000) % 60} s.
+        </p>
       </div>
     </div>
   );

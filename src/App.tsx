@@ -1,50 +1,65 @@
 import { useState } from "react";
-import { NavBar, Card } from "./components";
+import { NavBar, Card, FilterOption } from "./components";
+
+const time = 150000;
 
 const laundromat = [
   {
     id: 1,
     status: "available",
+    remaining: time,
   },
   {
     id: 2,
     status: "available",
+    remaining: time,
   },
   {
     id: 3,
     status: "available",
+    remaining: time,
   },
   {
     id: 4,
     status: "available",
+    remaining: time,
   },
 ];
 
 function App() {
   const [machine, setMachine] = useState(laundromat);
+  const [filteredMachine, setFilteredMachine] = useState(laundromat);
+  const [options, setOptions] = useState("all");
 
-  const checkAvailable = () => {
-    const available = machine
-      .filter((obj) => obj.status === "available")
-      .map((obj) => obj.id);
-
-    alert(`Machine ID: ${available} are available`);
+  const changeFilterOptions = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOptions(e.target.value);
+    const filtered = machine.filter((obj) => obj.status === e.target.value);
+    setFilteredMachine(filtered);
   };
 
+  const showAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOptions(e.target.value);
+    const filtered = machine.filter((obj) => obj.status);
+    setFilteredMachine(filtered);
+  };
   return (
     <>
       <NavBar />
       <main className="mt-14  flex min-h-screen flex-col">
-        <button
-          type="button"
-          className="mt-3 w-fit self-center rounded-md bg-green-400 p-2 text-white"
-          onClick={checkAvailable}
-        >
-          Check Available
-        </button>
+        <FilterOption
+          options={options}
+          showAll={showAll}
+          changeFilterOptions={changeFilterOptions}
+        />
+
         <div className="grid grid-cols-2 gap-2 p-2">
-          {machine.map((item) => (
-            <Card key={item.id} item={item} setMachine={setMachine} />
+          {filteredMachine.map((item) => (
+            <Card
+              key={item.id}
+              item={item}
+              setMachine={setMachine}
+              setFilteredMachine={setFilteredMachine}
+            />
           ))}
         </div>
       </main>
