@@ -48,11 +48,11 @@ const Card = ({ item, setMachine, setFilteredMachine }: Props) => {
       //set the status of machine to unavailable
       setMachine((prev: Prev[]) => updateStatus(prev));
       const myinterval = setInterval(() => {
-        //decrement the time left by 1s
-        timeRemaining -= 1000;
         if (timeRemaining > 0) {
           // send message to line group if time less than 1 min
           if (timeRemaining === 60000) sendMessage();
+          //decrement the time left by 1s
+          timeRemaining -= 1000;
           // set the time remaining in the filtered machine
           setFilteredMachine((prev: Prev[]) => {
             const newRemaining = prev.map((obj) => {
