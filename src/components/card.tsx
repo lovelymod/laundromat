@@ -71,13 +71,13 @@ const Card = ({ item, setMachine, setFilteredMachine }: Props) => {
         } else {
           //set the status of machine to available
           setMachine((prev: Prev[]) => updateStatus(prev));
-          // set filtered machine  time remaining to 90000
+          // set filtered machine  time remaining to 65000
           setFilteredMachine((prev: Prev[]) => {
             return prev.map((obj) => {
               if (obj.id === item.id) {
                 return {
                   ...obj,
-                  remaining: 90000,
+                  remaining: 65000,
                 };
               }
 
