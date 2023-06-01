@@ -30,17 +30,18 @@ app.post("/sendmessage", (req, res) => {
 app.post("/webhook", line.middleware(lineConfig), async (req, res) => {
   try {
     const events = req.body.events;
-    return events.length > 0
-      ? await events.map((item) => handleEvent(item))
-      : res.status(200).send("ok");
+    console.log(events);
+    // return events.length > 0
+    //   ? await events.map((item) => handleEvent(item))
+    //   : res.status(200).send("ok");
   } catch (error) {
     res.status(500).end();
   }
 });
 
-const handleEvent = (event) => {
-  console.log(event);
-  return client.replyMessage(event.replyToken, { type: "text", text: "Hello" });
-};
+// const handleEvent = (event) => {
+//   console.log(event);
+//   return client.replyMessage(event.replyToken, { type: "text", text: "Hello" });
+// };
 
 app.listen(3333, () => console.log("Server is running on port 3333"));

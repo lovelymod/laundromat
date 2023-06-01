@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavBar, Card, FilterOption } from "./components";
 
-const time = 90000;
+const time = 65000;
 
 const laundromat = [
   {
@@ -49,7 +49,7 @@ function App() {
   };
 
   useEffect(() => {
-    // filter everytime machine change
+    // filter everytime value in machine change
     const filtered = machine.filter((obj) => {
       if (options === "all") {
         return obj;
@@ -63,13 +63,13 @@ function App() {
   return (
     <>
       <NavBar />
-      <main className="mt-14  flex min-h-screen flex-col">
+      <main className="mt-14 flex min-h-screen flex-col">
         <FilterOption
           options={options}
           changeFilterOptions={changeFilterOptions}
         />
 
-        <div className="grid grid-cols-1 place-items-center gap-2 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="grid grid-cols-1 place-items-center gap-y-5 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {filteredMachine.map((item) => (
             <Card
               key={item.id}

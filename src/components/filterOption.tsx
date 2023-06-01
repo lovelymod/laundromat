@@ -6,7 +6,7 @@ interface Props {
 const FilterOption = ({ options, changeFilterOptions }: Props) => {
   return (
     <div className="my-3 flex items-center justify-center gap-3">
-      <div className="">
+      <div className="flex items-center gap-1">
         <input
           type="radio"
           id="radioSelect1"
@@ -17,7 +17,7 @@ const FilterOption = ({ options, changeFilterOptions }: Props) => {
         />
         <label htmlFor="radioSelect1">All</label>
       </div>
-      <div className="">
+      <div className="flex items-center gap-1">
         <input
           type="radio"
           id="radioSelect2"
@@ -28,7 +28,7 @@ const FilterOption = ({ options, changeFilterOptions }: Props) => {
         />
         <label htmlFor="radioSelect2">Available</label>
       </div>
-      <div className="">
+      <div className="flex items-center gap-1">
         <input
           type="radio"
           id="radioSelect3"

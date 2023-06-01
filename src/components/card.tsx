@@ -9,11 +9,14 @@ interface Prev {
 
 interface Props {
   item: Prev;
-  setMachine: React.Dispatch<React.SetStateAction<any>>;
-  setFilteredMachine: React.Dispatch<React.SetStateAction<any>>;
+  setMachine: React.Dispatch<React.SetStateAction<Prev[]>>;
+  setFilteredMachine: React.Dispatch<React.SetStateAction<Prev[]>>;
 }
 
 const Card = ({ item, setMachine, setFilteredMachine }: Props) => {
+  let minutes = Math.floor(item.remaining / 1000 / 60);
+  let second = `${Math.floor(item.remaining / 1000) % 60}`;
+
   const sendMessage = async () => {
     try {
       await axios.post("http://localhost:3333/sendmessage", { id: item.id });
@@ -22,6 +25,7 @@ const Card = ({ item, setMachine, setFilteredMachine }: Props) => {
     }
   };
 
+  // toggle status
   const updateStatus = (prev: Prev[]) => {
     const newStatus = prev.map((obj) => {
       if (obj.id === item.id) {
@@ -39,17 +43,16 @@ const Card = ({ item, setMachine, setFilteredMachine }: Props) => {
 
   const startTimer = () => {
     if (item.status === "available") {
-      let timeRemaining = item.remaining; //copy of the time remaining of item
-      setMachine((prev: Prev[]) => updateStatus(prev)); //set the status of machine to unavailable
+      //copy of the time remaining of item
+      let timeRemaining = item.remaining;
+      //set the status of machine to unavailable
+      setMachine((prev: Prev[]) => updateStatus(prev));
       const myinterval = setInterval(() => {
-        timeRemaining -= 1000; //decrement the time left by 1s
+        //decrement the time left by 1s
+        timeRemaining -= 1000;
         if (timeRemaining > 0) {
-          // send message to to group if time < 1 min
-          if (timeRemaining === 85000) {
-            console.log("hi");
-            sendMessage();
-          }
-
+          // send message to line group if time less than 1 min
+          if (timeRemaining === 60000) sendMessage();
           // set the time remaining in the filtered machine
           setFilteredMachine((prev: Prev[]) => {
             const newRemaining = prev.map((obj) => {
@@ -66,7 +69,8 @@ const Card = ({ item, setMachine, setFilteredMachine }: Props) => {
             return newRemaining;
           });
         } else {
-          setMachine((prev: Prev[]) => updateStatus(prev)); //set the status of machine to available
+          //set the status of machine to available
+          setMachine((prev: Prev[]) => updateStatus(prev));
           // set filtered machine  time remaining to 90000
           setFilteredMachine((prev: Prev[]) => {
             return prev.map((obj) => {
@@ -80,6 +84,7 @@ const Card = ({ item, setMachine, setFilteredMachine }: Props) => {
               return obj;
             });
           });
+          // clear interval
           clearInterval(myinterval);
         }
       }, 1000);
@@ -106,10 +111,9 @@ const Card = ({ item, setMachine, setFilteredMachine }: Props) => {
         />
       </div>
       <div className="font-medium">
-        <p className="">Status: {item.status}</p>
-        <p className="">
-          Timer: {Math.floor(item.remaining / 1000 / 60)}:
-          {Math.floor(item.remaining / 1000) % 60} s.
+        <p className="capitalize">Status: {item.status}</p>
+        <p>
+          Timer: {minutes}:{second.length === 1 ? `0${second}` : second} s.
         </p>
       </div>
     </div>
