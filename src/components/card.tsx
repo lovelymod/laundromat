@@ -113,7 +113,7 @@ const Card = ({ item, setMachine, setFilteredMachine }: Props) => {
       <div className="font-medium">
         <p className="capitalize">Status: {item.status}</p>
         <p>
-          Timer: {minutes}:{second.length === 1 ? `0${second}` : second} s.
+          Timer: {minutes}:{second.length === 1 ? `0${second}` : second} m.
         </p>
       </div>
     </div>
